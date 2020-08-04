@@ -10,8 +10,6 @@
 #define avObject_hpp
 
 #include <stdio.h>
-//#include <regression.h>
-//#include <modelSet.h>
 #include <ofxGui.h>
 #include <ofxXmlSettings.h>
 #include <vector>

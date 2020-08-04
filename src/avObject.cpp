@@ -359,156 +359,166 @@ void avObject::randomParams(int _numVoices){
     }
 }
 
-void avObject::trainingExamples(int _numVoices, int _x, int _y){
+void avObject::trainingExamples(int _numVoices, int _x, int _y)
+{
     
-    int numVoices = _numVoices;
-    int x = _x;
-    int y = _y;
+    	int numVoices = _numVoices;
+    	int x = _x;
+    	int y = _y;
     
-    for(int i = 0; i < numVoices; i++){
-        rapidlib::trainingExample tempExample[numVoices];
-        tempExample[i].input = {double(x), double(y)};
-        tempExample[i].output = {(double) vertices[i], (double) depthJitter[i], (double) vertDist[i], (double) lfoFreq[i], (double) harmRatio[i], (double) modInd[i], (double) controlVoltage[i], (double) sawAmp[i], (double) sawFreq[i], (double) pulseAmp[i], (double) pulseDuty[i], (double) pulseFreq[i], (double) noiseFiltLowCut[i], (double) noiseFiltHiCut[i], (double) cf[i], (double) q[i], (double) res[i], (double) attack[i], (double) decay[i], (double) sustain[i], (double) release[i]};
-        trainingSet[i].push_back(tempExample[i]);
-    }
+    	for(int i = 0; i < numVoices; i++)
+	{
+        	rapidlib::trainingExample tempExample[numVoices];
+        	tempExample[i].input = {double(x), double(y)};
+        	tempExample[i].output = {(double) vertices[i], (double) depthJitter[i], (double) vertDist[i], (double) lfoFreq[i], (double) harmRatio[i], (double) modInd[i], (double) controlVoltage[i], (double) sawAmp[i], (double) sawFreq[i], (double) pulseAmp[i], (double) pulseDuty[i], (double) pulseFreq[i], (double) noiseFiltLowCut[i], (double) noiseFiltHiCut[i], (double) cf[i], (double) q[i], (double) res[i], (double) attack[i], (double) decay[i], (double) sustain[i], (double) release[i]};
+        	trainingSet[i].push_back(tempExample[i]);
+    	}
 }
 
-bool avObject::trainModel(int _numVoices){
+bool avObject::trainModel(int _numVoices)
+{
     
-    int numVoices = _numVoices;
+    	int numVoices = _numVoices;
     
-    for(int i = 0; i < numVoices; i++){
-        result = reg[i][regNum[i]].train(trainingSet[i]);
-    }
+    	for(int i = 0; i < numVoices; i++)
+	{
+        	result = reg[i][regNum[i]].train(trainingSet[i]);
+    	}
     
-    return result;
+    	return result;
 }
 
-void avObject::trainedOutput(int _numVoices, int _x, int _y){
+void avObject::trainedOutput(int _numVoices, int _x, int _y)
+{
     int numVoices = _numVoices;
     int x = _x;
     int y = _y;
     std::vector<double> input[numVoices];
     std::vector<double> output[numVoices];
     
-    for(int i = 0; i < numVoices; i++){
+    	for(int i = 0; i < numVoices; i++)
+	{
         
-        input[i].push_back (double(x));
-        input[i].push_back (double(y));
-        output[i] = reg[i][regNum[i]].run(input[i]);
-        
-        vertices[i] = output[i][0];
-        if (output[i][0] < 2){
-            vertices[i] = 2;
-        }
-        
-        depthJitter[i] = output[i][1];
-        if (output[i][1] < 0){
-            depthJitter[i] = 0;
-        }
-        
-        vertDist[i] = output[i][2];
-        if (output[i][2] < 0){
-            vertDist[i] = 0;
-        }
-        
-        lfoFreq[i] = output[i][3];
-        if (output[i][3] < 0){
-            lfoFreq[i] = 0;
-        }
-        
-        harmRatio[i] = output[i][4];
-        if (output[i][4] < 0){
-            harmRatio[i] = 0;
-        }
-        
-        modInd[i] = output[i][5];
-        if (output[i][5] < 0){
-            modInd[i] = 0;
-        }
-        
-        controlVoltage[i] = output[i][6];
-        if (output[i][6] < 1){
-            controlVoltage[i] = 1;
-        }
-        
-        sawAmp[i] = output[i][7];
-        if (output[i][7] < 0.1){
-            sawAmp[i] = 0.1;
-        } else if (output[i][7] > 0.5){
-            sawAmp[i] = 0.5;
-        }
-        
-        sawFreq[i] = output[i][8];
-        if (output[i][8] < 0){
-            sawFreq[i] = 0;
-        }
-        
-        pulseAmp[i] = output[i][9];
-        if(output[i][9] < 0.1){
-            pulseAmp[i] = 0.1;
-        } else if (output[i][9] > 0.5){
-            pulseAmp[i] = 0.5;
-        }
-        
-        pulseDuty[i] = output[i][10];
-        if (output[i][10] < 0){
-            pulseDuty[i] = 0;
-        }
-        
-        pulseFreq[i] = output[i][11];
-        if (output[i][11] < 0){
-            pulseFreq[i] = 0;
-        }
-        
-        noiseFiltLowCut[i] = output[i][12];
-        if (output[i][12] < 0.01){
-            noiseFiltLowCut[i] = 0.01;
-        }
-        
-        noiseFiltHiCut[i] = output[i][13];
-        if (output[i][13] < 0.01){
-            noiseFiltHiCut[i] = 0.01;
-        }
-        
-        cf[i] = output[i][14];
-        if (output[i][14] < 1){
-            cf[i] = 1;
-        }
-        
-        q[i] = output[i][15];
-        if(output[i][15] < 1){
-            q[i]= 1;
-        } else if(output[i][15] > 50){
-            q[i] = 50;
-        }
-        
-        res[i] = output[i][16];
-        if(output[i][16] < 1.0){
-            res[i] = 1.0;
-        } else if (output[i][16] > 20.0){
-            res[i] = 20.0;
-        }
-        
-        attack[i] = output[i][17];
-        if (output[i][17] < 1){
-            attack[i] = 1;
-        }
-        
-        decay[i] = output[i][18];
-        if (output[i][18] < 1){
-            decay[i]= 1;
-        }
-        
-        sustain[i] = output[i][19];
-        if (output[i][19] < 1){
-            sustain[i] = 1;
-        }
-        
-        release[i] = output[i][20];
-        if (output[i][20] < 1){
-            release[i] = 1;
-        }
+        	input[i].push_back (double(x));
+        	input[i].push_back (double(y));
+        	output[i] = reg[i][regNum[i]].run(input[i]);
+        	
+        	vertices[i] = output[i][0];
+        	if (output[i][0] < 2)
+            {
+        	    vertices[i] = 2;
+        	}
+        	
+        	depthJitter[i] = output[i][1];
+        	if (output[i][1] < 0)
+            {
+        	    depthJitter[i] = 0;
+        	}
+        	
+        	vertDist[i] = output[i][2];
+        	if (output[i][2] < 0)
+            {
+        	    vertDist[i] = 0;
+        	}
+        	
+        	lfoFreq[i] = output[i][3];
+        	if (output[i][3] < 0)
+            {
+        	    lfoFreq[i] = 0;
+        	}
+        	
+        	harmRatio[i] = output[i][4];
+        	if (output[i][4] < 0){
+        	    harmRatio[i] = 0;
+        	}
+        	
+        	modInd[i] = output[i][5];
+        	if (output[i][5] < 0){
+        	    modInd[i] = 0;
+        	}
+        	
+        	controlVoltage[i] = output[i][6];
+        	if (output[i][6] < 1){
+        	    controlVoltage[i] = 1;
+        	}
+        	
+        	sawAmp[i] = output[i][7];
+        	if (output[i][7] < 0.1){
+        	    sawAmp[i] = 0.1;
+        	} else if (output[i][7] > 0.5){
+        	    sawAmp[i] = 0.5;
+        	}
+        	
+        	sawFreq[i] = output[i][8];
+        	if (output[i][8] < 0){
+        	    sawFreq[i] = 0;
+        	}
+        	
+        	pulseAmp[i] = output[i][9];
+        	if(output[i][9] < 0.1){
+        	    pulseAmp[i] = 0.1;
+        	} else if (output[i][9] > 0.5){
+        	    pulseAmp[i] = 0.5;
+        	}
+        	
+        	pulseDuty[i] = output[i][10];
+        	if (output[i][10] < 0){
+        	    pulseDuty[i] = 0;
+        	}
+        	
+        	pulseFreq[i] = output[i][11];
+        	if (output[i][11] < 0){
+        	    pulseFreq[i] = 0;
+        	}
+        	
+        	noiseFiltLowCut[i] = output[i][12];
+        	if (output[i][12] < 0.01){
+        	    noiseFiltLowCut[i] = 0.01;
+        	}
+        	
+        	noiseFiltHiCut[i] = output[i][13];
+        	if (output[i][13] < 0.01){
+        	    noiseFiltHiCut[i] = 0.01;
+        	}
+        	
+        	cf[i] = output[i][14];
+        	if (output[i][14] < 1){
+        	    cf[i] = 1;
+        	}
+        	
+        	q[i] = output[i][15];
+        	if(output[i][15] < 1){
+        	    q[i]= 1;
+        	} else if(output[i][15] > 50){
+        	    q[i] = 50;
+        	}
+        	
+        	res[i] = output[i][16];
+        	if(output[i][16] < 1.0){
+        	    res[i] = 1.0;
+        	} else if (output[i][16] > 20.0){
+        	    res[i] = 20.0;
+        	}
+        	
+        	attack[i] = output[i][17];
+        	if (output[i][17] < 1){
+        	    attack[i] = 1;
+        	}
+        	
+        	decay[i] = output[i][18];
+        	if (output[i][18] < 1){
+        	    decay[i]= 1;
+        	}
+        	
+        	sustain[i] = output[i][19];
+        	if (output[i][19] < 1){
+        	    sustain[i] = 1;
+        	}
+        	
+        	release[i] = output[i][20];
+        	if (output[i][20] < 1){
+        	    release[i] = 1;
+        	}
         
     }
     

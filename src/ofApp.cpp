@@ -48,7 +48,8 @@ void ofApp::exit(){
 void ofApp::update(){
     
     av.visual(numVoices);
-    trained = av.readWrite(numVoices);
+    // commented out as trained was being reset to false for testing of chapter 4 text
+    //trained = av.readWrite(numVoices);
     
 }
 
