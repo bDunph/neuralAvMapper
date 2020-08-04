@@ -366,7 +366,7 @@ void avObject::trainingExamples(int _numVoices, int _x, int _y){
     int y = _y;
     
     for(int i = 0; i < numVoices; i++){
-        trainingExample tempExample[numVoices];
+        rapidlib::trainingExample tempExample[numVoices];
         tempExample[i].input = {double(x), double(y)};
         tempExample[i].output = {(double) vertices[i], (double) depthJitter[i], (double) vertDist[i], (double) lfoFreq[i], (double) harmRatio[i], (double) modInd[i], (double) controlVoltage[i], (double) sawAmp[i], (double) sawFreq[i], (double) pulseAmp[i], (double) pulseDuty[i], (double) pulseFreq[i], (double) noiseFiltLowCut[i], (double) noiseFiltHiCut[i], (double) cf[i], (double) q[i], (double) res[i], (double) attack[i], (double) decay[i], (double) sustain[i], (double) release[i]};
         trainingSet[i].push_back(tempExample[i]);
@@ -395,7 +395,7 @@ void avObject::trainedOutput(int _numVoices, int _x, int _y){
         
         input[i].push_back (double(x));
         input[i].push_back (double(y));
-        output[i] = reg[i][regNum[i]].process(input[i]);
+        output[i] = reg[i][regNum[i]].run(input[i]);
         
         vertices[i] = output[i][0];
         if (output[i][0] < 2){

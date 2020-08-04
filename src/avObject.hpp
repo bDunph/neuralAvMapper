@@ -10,8 +10,8 @@
 #define avObject_hpp
 
 #include <stdio.h>
-#include <regression.h>
-#include <modelSet.h>
+//#include <regression.h>
+//#include <modelSet.h>
 #include <ofxGui.h>
 #include <ofxXmlSettings.h>
 #include <vector>
@@ -19,6 +19,7 @@
 #include <ofxMaxim.h>
 #include <maximilian.h>
 #include <random>
+#include <ofxRapidLib.h>
 
 #define NUMTAPS 4
 #define NUMREGS 5
@@ -173,8 +174,8 @@ private:
     
     //********** Rapidmix ************//
     
-    regression reg[numAvs][NUMREGS];
-    std::vector<trainingExample> trainingSet[numAvs];
+    rapidlib::regression reg[numAvs][NUMREGS];
+    std::vector<rapidlib::trainingExample> trainingSet[numAvs];
     bool result;
     bool isTrained;
 };
