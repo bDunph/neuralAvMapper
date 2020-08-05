@@ -96,19 +96,22 @@ void avObject::avSetup(int _numVoices){
     
 }
 
-void avObject::visual (int _numVoices){
+void avObject::visual (int _numVoices)
+{
     
     int numVoices = _numVoices;
     
-    for(int i = 0; i < numVoices; i++){
-        
-        if(shape[i] == 0){
-            
-            /********* Cube **********/
-            
-            for(int x=0; x<vertices[i]; ++x){
-                for(int y=0; y<vertices[i]; ++y){
-                    for(int z=0; z<vertices[i]; ++z){
+    for(int i = 0; i < numVoices; i++)
+    {
+        if(shape[i] == 0)
+        {
+            //********* Cube **********/
+            for(int x=0; x<vertices[i]; ++x)
+            {
+                for(int y=0; y<vertices[i]; ++y)
+                {
+                    for(int z=0; z<vertices[i]; ++z)
+                    {
                         int jit = ofRandom(-depthJitter[i], depthJitter[i]);
                         float xPos, yPos, zPos;
                         int offset = 50;
@@ -117,34 +120,32 @@ void avObject::visual (int _numVoices){
                         zPos = z * offset + jit;
                         ofVec3f vertex(xPos, yPos, zPos);
                         meshes[i][selVis].addVertex(vertex);
-                        meshes[i][selVis].addColor(ofColor(ofRandom(50, 100), ofRandom(100, 200), ofRandom(50, 150)));
+                        meshes[i][selVis].addColor(ofColor::white);
                     }
                 }
             }
-            
-        } else if(shape[i] == 1){
-            
-            /********* Sphere ***********/
-            
-            /**** code from https://github.com/nicohsieh/sphere-freq/blob/master/src/testApp.cpp ***/
-            
+        } else if(shape[i] == 1)
+        {
+            //********* Sphere ***********/
+            //**** code from https://github.com/nicohsieh/sphere-freq/blob/master/src/testApp.cpp ***/
             int radius = 250;
             meshes[i][selVis].addVertex(ofVec3f(0,0,1*radius));
             
-            for (int j=1; j<vertices[i]; j++) {
+            for (int j=1; j<vertices[i]; j++)
+            {
                 double xPos, yPos, zPos;
                 double phi = PI * double(j)/(vertices[i]);
                 double cosPhi = cos(phi);
                 double sinPhi = sin(phi);
-                for (int k=0; k<vertices[i]; k++) {
+                for (int k=0; k<vertices[i]; k++)
+                {
                     float jitter = ofRandom(-depthJitter[i], depthJitter[i]);
                     double theta = TWO_PI * double(k)/(vertices[i]);
                     xPos = cos(theta)*sinPhi*radius + jitter;
                     yPos = sin(theta)*sinPhi*radius + jitter;
                     zPos = cosPhi*radius + jitter;
-                    meshes[i][selVis].addColor(ofColor(ofRandom(50, 100), ofRandom(100, 200), ofRandom(50, 150)));
+                    meshes[i][selVis].addColor(ofColor::red);
                     meshes[i][selVis].addVertex(ofVec3f(xPos, yPos, zPos));
-                    
                 }
             }
             meshes[i][selVis].addVertex(ofVec3f(0,0,-1*radius));
@@ -153,12 +154,15 @@ void avObject::visual (int _numVoices){
         //********* From ofBook Graphics Mesh Tutorial *********//
         float connectionDistance = vertDist[i];
         int numVerts = meshes[i][selVis].getNumVertices();
-        for (int a=0; a<numVerts; ++a) {
+        for (int a=0; a<numVerts; ++a)
+        {
             ofVec3f verta = meshes[i][selVis].getVertex(a);
-            for (int b=a+1; b<numVerts; ++b) {
+            for (int b=a+1; b<numVerts; ++b)
+            {
                 ofVec3f vertb = meshes[i][selVis].getVertex(b);
                 float distance = verta.distance(vertb);
-                if (distance <= connectionDistance) {
+                if (distance <= connectionDistance)
+                {
                     // In OF_PRIMITIVE_LINES, every pair of vertices or indices will be
                     // connected to form a line
                     meshes[i][selVis].addIndex(a);
@@ -167,20 +171,18 @@ void avObject::visual (int _numVoices){
             }
         }
     }
-    
     selVis = !selVis;
-    
 }
 
-void avObject::drawVisual(int _numVoices){
-    
+void avObject::drawVisual(int _numVoices)
+{
     int numVoices = _numVoices;
     
-    for(int i = 0; i < numVoices; i++){
+    for(int i = 0; i < numVoices; i++)
+    {
         meshes[i][selDrawVis].draw();
         meshes[i][selDrawVis].clear();
     }
-    
     selDrawVis = !selDrawVis;
 }
 
@@ -195,12 +197,12 @@ double * avObject::audio(int _numVoices){
         ampEnv[i].setSustain(sustain[i]);
         ampEnv[i].setRelease(release[i]);
         
-        /********* Synth ****************/
+        //********* Synth ****************/
         
         delColl[i] = 0;
         filteredSig[i] = 0;
         
-        /*** Oscillators ***/
+        //*** Oscillators ***/
         
         if(FM[i] && lfoOn[i]){
             lfo[i] = lfOsc[i].sinewave(lfoFreq[i]);
@@ -222,7 +224,7 @@ double * avObject::audio(int _numVoices){
         
         sigMix[i] = (saw[i] + pulse[i]) * 0.5;
         
-        /*** Filters & Envelopes ***/
+        //*** Filters & Envelopes ***/
         
         hiPass[i] = noiseFiltHi[i].hipass(sigMix[i], noiseFiltHiCut[i]);
         
@@ -246,7 +248,7 @@ double * avObject::audio(int _numVoices){
         
         else ampEnv[i].trigger=0;//release the envelope to make it fade out only if it's been triggered
         
-        /*** Delay ***/
+        //*** Delay ***/
         
         if(delaySig[i]){
             

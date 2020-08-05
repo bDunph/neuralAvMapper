@@ -120,7 +120,7 @@ void ofApp::audioOut(float * output, int bufferSize, int nChannels) {
             finalSig += (synthMix[i] / numVoices) * masterVol;
         }
         
-        /*** Limiter ***/
+        //*** Limiter ***/
         
         if (finalSig > 0.8) {
             finalSig = 0.8;
