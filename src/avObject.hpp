@@ -159,8 +159,8 @@ private:
     double lpc[numAvs];
     double hp[numAvs];
     double lp[numAvs];
-    double delBoy [numAvs][NUMTAPS];
-    double delColl[numAvs];
+    double delRes [numAvs][NUMTAPS];
+    double delTot[numAvs];
     int noteTrig[numAvs];
     double outSig[numAvs];
     double * multiOut;

@@ -186,12 +186,12 @@ void avObject::drawVisual(int _numVoices)
     selDrawVis = !selDrawVis;
 }
 
-double * avObject::audio(int _numVoices){
-    
+double * avObject::audio(int _numVoices)
+{
     int numVoices = _numVoices;
     
-    for(int i = 0; i < numVoices; i++){
-        
+    for(int i = 0; i < numVoices; i++)
+    {
         ampEnv[i].setAttack(attack[i]);
         ampEnv[i].setDecay(decay[i]);  // Needs to be at least 1
         ampEnv[i].setSustain(sustain[i]);
@@ -199,25 +199,28 @@ double * avObject::audio(int _numVoices){
         
         //********* Synth ****************/
         
-        delColl[i] = 0;
+        delTot[i] = 0;
         filteredSig[i] = 0;
         
         //*** Oscillators ***/
         
-        if(FM[i] && lfoOn[i]){
+        if(FM[i] && lfoOn[i])
+        {
             lfo[i] = lfOsc[i].sinewave(lfoFreq[i]);
             harmonicity[i] = sawFreq[i] * (harmRatio[i] * lfo[i]);
             modAmp[i] = harmonicity[i] * (modInd[i] * lfo[i]);
             modulator[i] = mod[i].sinewave(harmonicity[i]) * modAmp[i];
-            saw[i] = sawOsc[i].square(modulator[i] + sawFreq[i]) * sawAmp[i];
+            saw[i] = sawOsc[i].saw(modulator[i] + sawFreq[i]) * sawAmp[i];
             pulse[i] = pulseGen[i].pulse(pulseFreq[i] + saw[i], pulseDuty[i] * lfo[i]) * pulseAmp[i];
-        } else if (FM[i] && !lfoOn[i]){
+        } else if (FM[i] && !lfoOn[i])
+        {
             harmonicity[i] = sawFreq[i] * harmRatio[i];
             modAmp[i] = harmonicity[i] * modInd[i];
             modulator[i] = mod[i].sinewave(harmonicity[i]) * modAmp[i];
-            saw[i] = sawOsc[i].square(modulator[i] + sawFreq[i]) * sawAmp[i];
+            saw[i] = sawOsc[i].saw(modulator[i] + sawFreq[i]) * sawAmp[i];
             pulse[i] = pulseGen[i].pulse(pulseFreq[i] + saw[i], pulseDuty[i]) * pulseAmp[i];
-        } else {
+        } else
+        {
             saw[i] = sawOsc[i].saw(sawFreq[i]) * sawAmp[i];
             pulse[i] = pulseGen[i].pulse(pulseFreq[i], pulseDuty[i]) * pulseAmp[i];
         }
@@ -227,7 +230,6 @@ double * avObject::audio(int _numVoices){
         //*** Filters & Envelopes ***/
         
         hiPass[i] = noiseFiltHi[i].hipass(sigMix[i], noiseFiltHiCut[i]);
-        
         lowPass[i] = noiseFiltLow[i].lopass(sigMix[i], noiseFiltLowCut[i]);
         
         hpc[i] = (double)cf[i] + ((double)q[i] * 0.5);
@@ -240,7 +242,7 @@ double * avObject::audio(int _numVoices){
         
         filteredSig[i] = (hiPass[i] + lowPass[i] + band[i]) * 0.33f;
         
-        amplitudeEnvelope[i]=ampEnv[i].adsr(1.,ampEnv[i].trigger);
+        amplitudeEnvelope[i] = ampEnv[i].adsr(1.,ampEnv[i].trigger);
         
         noteTrig[i]=counter[i].phasor(controlVoltage[i], 1, 9);//phasor can take three arguments; frequency, start value and end value.
         
@@ -253,10 +255,10 @@ double * avObject::audio(int _numVoices){
         if(delaySig[i]){
             
             for(int j=0; j<NUMTAPS; ++j){
-                delBoy[i][j] = delay[i][j].dl(filteredSig[i], 4100*i, 0.8);
-                delColl[i] += delBoy[i][j];
+                delRes[i][j] = delay[i][j].dl(filteredSig[i], 4100*i, 0.8);
+                delTot[i] += delRes[i][j];
             }
-            envOutput[i] = (filteredSig[i] + delColl[i]) * amplitudeEnvelope[i] * 0.5;
+            envOutput[i] = (filteredSig[i] + delTot[i]) * amplitudeEnvelope[i] * 0.5;
         } else {
             envOutput[i] = filteredSig[i] * amplitudeEnvelope[i];
         }
