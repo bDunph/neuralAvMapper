@@ -536,20 +536,20 @@ bool avObject::readWrite(int _numVoices){
         
         int currentReg = regNum[i];
         
-        if(saveParams[i]) {gui[i].saveToFile("/Users/bryandunphy/Documents/code/of_v0.9.8_osx_release/apps/myApps/regMap/bin/data/postUpgrade/avParams_"+ofToString(i)+"_"+ofGetTimestampString()+".xml");}
-        if(loadParams[i]) {gui[i].loadFromFile("/Users/bryandunphy/Documents/code/of_v0.9.8_osx_release/apps/myApps/regMap/bin/data/postUpgrade/avParams_"+ofToString(i)+"_"+ofToString(currentReg)+".xml");}
+        if(saveParams[i]) {gui[i].saveToFile("data/savedParams/avParams_"+ofToString(i)+"_"+ofGetTimestampString()+".xml");}
+        if(loadParams[i]) {gui[i].loadFromFile("data/savedParams/avParams_"+ofToString(i)+"_"+ofToString(currentReg)+".xml");}
         
-        if(r1[i]) {isTrained = reg[i][regNum[i]].readJSON("/Users/bryandunphy/Documents/code/of_v0.9.8_osx_release/apps/myApps/regMap/bin/data/postUpgrade/newTestReg1_"+ofToString(i)+".JSON");}
-        if(r2[i]) {isTrained = reg[i][regNum[i]].readJSON("/Users/bryandunphy/Documents/code/of_v0.9.8_osx_release/apps/myApps/regMap/bin/data/postUpgrade/newTestReg2_"+ofToString(i)+".JSON");}
-        if(r3[i]) {isTrained = reg[i][regNum[i]].readJSON("/Users/bryandunphy/Documents/code/of_v0.9.8_osx_release/apps/myApps/regMap/bin/data/postUpgrade/newTestReg3_"+ofToString(i)+".JSON");}
-        if(r4[i]) {isTrained = reg[i][regNum[i]].readJSON("/Users/bryandunphy/Documents/code/of_v0.9.8_osx_release/apps/myApps/regMap/bin/data/postUpgrade/newTestReg4_"+ofToString(i)+".JSON");}
-        if(r5[i]) {isTrained = reg[i][regNum[i]].readJSON("/Users/bryandunphy/Documents/code/of_v0.9.8_osx_release/apps/myApps/regMap/bin/data/postUpgrade/newTestReg5_"+ofToString(i)+".JSON");}
+        if(r1[i]) {isTrained = reg[i][regNum[i]].readJSON("data/savedModels/newTestReg1_"+ofToString(i)+".JSON");}
+        if(r2[i]) {isTrained = reg[i][regNum[i]].readJSON("data/savedModels/newTestReg2_"+ofToString(i)+".JSON");}
+        if(r3[i]) {isTrained = reg[i][regNum[i]].readJSON("data/savedModels/newTestReg3_"+ofToString(i)+".JSON");}
+        if(r4[i]) {isTrained = reg[i][regNum[i]].readJSON("data/savedModels/newTestReg4_"+ofToString(i)+".JSON");}
+        if(r5[i]) {isTrained = reg[i][regNum[i]].readJSON("data/savedModels/newTestReg5_"+ofToString(i)+".JSON");}
         
-        if(w1[i]) {reg[i][regNum[i]].writeJSON("/Users/bryandunphy/Documents/code/of_v0.9.8_osx_release/apps/myApps/regMap/bin/data/postUpgrade/newTestReg1_"+ofToString(i)+".JSON");}
-        if(w2[i]) {reg[i][regNum[i]].writeJSON("/Users/bryandunphy/Documents/code/of_v0.9.8_osx_release/apps/myApps/regMap/bin/data/postUpgrade/newTestReg2_"+ofToString(i)+".JSON");}
-        if(w3[i]) {reg[i][regNum[i]].writeJSON("/Users/bryandunphy/Documents/code/of_v0.9.8_osx_release/apps/myApps/regMap/bin/data/postUpgrade/newTestReg3_"+ofToString(i)+".JSON");}
-        if(w4[i]) {reg[i][regNum[i]].writeJSON("/Users/bryandunphy/Documents/code/of_v0.9.8_osx_release/apps/myApps/regMap/bin/data/postUpgrade/newTestReg4_"+ofToString(i)+".JSON");}
-        if(w5[i]) {reg[i][regNum[i]].writeJSON("/Users/bryandunphy/Documents/code/of_v0.9.8_osx_release/apps/myApps/regMap/bin/data/postUpgrade/newTestReg5_"+ofToString(i)+".JSON");}
+        if(w1[i]) {reg[i][regNum[i]].writeJSON("data/savedModels/newTestReg1_"+ofToString(i)+".JSON");}
+        if(w2[i]) {reg[i][regNum[i]].writeJSON("data/savedModels/newTestReg2_"+ofToString(i)+".JSON");}
+        if(w3[i]) {reg[i][regNum[i]].writeJSON("data/savedModels/newTestReg3_"+ofToString(i)+".JSON");}
+        if(w4[i]) {reg[i][regNum[i]].writeJSON("data/savedModels/newTestReg4_"+ofToString(i)+".JSON");}
+        if(w5[i]) {reg[i][regNum[i]].writeJSON("data/savedModels/newTestReg5_"+ofToString(i)+".JSON");}
     }
     
     return isTrained;
